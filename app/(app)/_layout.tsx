@@ -2,6 +2,7 @@ import { Redirect, Stack } from 'expo-router';
 import { useAuthStore } from '../../src/state/useAuthStore';
 import { Screen } from '../../src/components/primitives/Screen';
 import { Spinner } from '../../src/components/primitives/Spinner';
+import { colors } from '../../src/theme/theme';
 
 export default function AppLayout() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -18,5 +19,15 @@ export default function AppLayout() {
 
   if (!isAuthenticated) return <Redirect href="/login" />;
 
-  return <Stack />;
+  return (
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.text,
+        headerTitleStyle: { fontWeight: '700' },
+        headerShadowVisible: false,
+        contentStyle: { backgroundColor: colors.background },
+      }}
+    />
+  );
 }

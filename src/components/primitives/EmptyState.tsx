@@ -1,5 +1,6 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Text } from './Text';
+import { styles } from './EmptyState.styles';
 
 interface EmptyStateProps {
   title: string;
@@ -16,8 +17,3 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center' },
-  action: {},
-});

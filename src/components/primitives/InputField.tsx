@@ -20,6 +20,9 @@ interface InputFieldProps {
   returnKeyType?: TextInputProps['returnKeyType'];
   onSubmitEditing?: () => void;
   editable?: boolean;
+  multiline?: boolean;
+  maxLength?: number;
+  autoCapitalize?: TextInputProps['autoCapitalize'];
 }
 
 export function InputField({
@@ -36,6 +39,9 @@ export function InputField({
   returnKeyType,
   onSubmitEditing,
   editable = true,
+  multiline = false,
+  maxLength,
+  autoCapitalize = 'none',
 }: InputFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -47,6 +53,7 @@ export function InputField({
       <View
         style={[
           styles.field,
+          multiline && styles.fieldMultiline,
           isFocused && styles.fieldFocused,
           hasError && styles.fieldError,
         ]}
@@ -57,10 +64,12 @@ export function InputField({
           placeholder={placeholder}
           placeholderTextColor={colors.textMuted}
           secureTextEntry={secureTextEntry && !isPasswordVisible}
-          style={[styles.input, webNoOutline]}
+          style={[styles.input, multiline && styles.inputMultiline, webNoOutline]}
           testID={testID}
           accessibilityLabel={label}
-          autoCapitalize="none"
+          autoCapitalize={autoCapitalize}
+          multiline={multiline}
+          maxLength={maxLength}
           autoCorrect={false}
           keyboardType={keyboardType}
           autoComplete={autoComplete}
