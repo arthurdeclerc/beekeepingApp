@@ -1,23 +1,36 @@
 import { create } from 'zustand';
-import { login as loginService, logout as logoutService } from '../services/authService';
+import {
+  login as loginService,
+  logout as logoutService,
+  watchSession,
+} from '../services/authService';
+import type { Credentials } from '../types/Auth';
 import type { User } from '../types/User';
 
 interface AuthState {
-  user: User | null;
+  user: User | undefined;
   isAuthenticated: boolean;
+  // false until the stored session has been read, so we don't flash the login screen.
+  isInitialized: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  initialize: () => () => void;
+  login: (credentials: Credentials) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
+  user: undefined,
   isAuthenticated: false,
+  isInitialized: false,
   isLoading: false,
-  login: async (email, password) => {
+  initialize: () =>
+    watchSession((user) => {
+      set({ user, isAuthenticated: user !== undefined, isInitialized: true });
+    }),
+  login: async (credentials) => {
     set({ isLoading: true });
     try {
-      const user = await loginService(email, password);
+      const user = await loginService(credentials);
       set({ user, isAuthenticated: true, isLoading: false });
     } catch (error) {
       set({ isLoading: false });
@@ -26,6 +39,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   logout: async () => {
     await logoutService();
-    set({ user: null, isAuthenticated: false });
+    set({ user: undefined, isAuthenticated: false });
   },
 }));

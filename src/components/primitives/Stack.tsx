@@ -1,4 +1,5 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { styles } from './Stack.styles';
 
 interface StackProps {
   children: React.ReactNode;
@@ -31,15 +32,3 @@ export function Stack({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  base: { flexDirection: 'column' },
-  gap_none: {},
-  gap_sm: {},
-  gap_md: {},
-  gap_lg: {},
-  padding_none: {},
-  padding_sm: {},
-  padding_md: {},
-  padding_lg: {},
-});

@@ -13,7 +13,7 @@ export default function HomeScreen() {
     <Screen padding="lg">
       <Stack gap="lg">
         <Text size="xl" weight="bold">
-          {user !== null ? `Welcome, ${user.name}` : 'Welcome'}
+          {user !== undefined ?`Welcome, ${user.name}` : 'Welcome'}
         </Text>
         <Text>Your items will appear here once you connect Supabase.</Text>
         <Badge label={'Succes badge'} variant={"success"} />

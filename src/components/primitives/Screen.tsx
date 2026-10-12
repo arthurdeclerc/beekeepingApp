@@ -1,4 +1,5 @@
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { styles } from './Screen.styles';
 
 interface ScreenProps {
   children: React.ReactNode;
@@ -21,13 +22,3 @@ export function Screen({ children, padding = 'md', scrollable = true }: ScreenPr
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scroll: { flex: 1 },
-  container: { flex: 1 },
-  content: { flexGrow: 1 },
-  none: {},
-  sm: {},
-  md: {},
-  lg: {},
-});

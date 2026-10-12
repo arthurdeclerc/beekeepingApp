@@ -1,8 +1,9 @@
-import { Text as RNText, StyleSheet } from 'react-native';
+import { Text as RNText } from 'react-native';
+import { styles } from './Text.styles';
 
 interface TextProps {
   children: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   weight?: 'normal' | 'medium' | 'bold';
   color?: string;
   align?: 'left' | 'center' | 'right';
@@ -32,16 +33,3 @@ export function Text({
     </RNText>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    color: '#111827',
-  },
-  sm: { fontSize: 12, lineHeight: 16 },
-  md: { fontSize: 14, lineHeight: 20 },
-  lg: { fontSize: 16, lineHeight: 24 },
-  xl: { fontSize: 20, lineHeight: 28 },
-  normal: { fontWeight: '400' },
-  medium: { fontWeight: '500' },
-  bold: { fontWeight: '700' },
-});
