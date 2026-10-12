@@ -1,5 +1,10 @@
-import { TextInput, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Pressable, TextInput, View } from 'react-native';
+import type { TextInputProps } from 'react-native';
+import { Icon } from './Icon';
 import { Text } from './Text';
+import { colors } from '../../theme/theme';
+import { styles, webNoOutline } from './InputField.styles';
 
 interface InputFieldProps {
   label: string;
@@ -9,6 +14,12 @@ interface InputFieldProps {
   secureTextEntry?: boolean;
   error?: string;
   testID?: string;
+  keyboardType?: TextInputProps['keyboardType'];
+  autoComplete?: TextInputProps['autoComplete'];
+  textContentType?: TextInputProps['textContentType'];
+  returnKeyType?: TextInputProps['returnKeyType'];
+  onSubmitEditing?: () => void;
+  editable?: boolean;
 }
 
 export function InputField({
@@ -19,26 +30,64 @@ export function InputField({
   secureTextEntry = false,
   error,
   testID,
+  keyboardType,
+  autoComplete,
+  textContentType,
+  returnKeyType,
+  onSubmitEditing,
+  editable = true,
 }: InputFieldProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const hasError = error !== undefined;
+
   return (
     <View style={styles.container}>
       <Text size="sm" weight="medium">{label}</Text>
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry}
-        style={[styles.input, error !== undefined && styles.inputError]}
-        testID={testID}
-        autoCapitalize="none"
-      />
-      {error !== undefined && <Text size="sm" color="red">{error}</Text>}
+      <View
+        style={[
+          styles.field,
+          isFocused && styles.fieldFocused,
+          hasError && styles.fieldError,
+        ]}
+      >
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={colors.textMuted}
+          secureTextEntry={secureTextEntry && !isPasswordVisible}
+          style={[styles.input, webNoOutline]}
+          testID={testID}
+          accessibilityLabel={label}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType={keyboardType}
+          autoComplete={autoComplete}
+          textContentType={textContentType}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing}
+          editable={editable}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+        {secureTextEntry && (
+          <Pressable
+            onPress={() => setIsPasswordVisible((visible) => !visible)}
+            style={styles.toggle}
+            accessibilityRole="button"
+            accessibilityLabel={isPasswordVisible ? 'Hide password' : 'Show password'}
+            hitSlop={8}
+          >
+            <Icon
+              name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+              size={22}
+              color={colors.textMuted}
+            />
+          </Pressable>
+        )}
+      </View>
+      {hasError && <Text size="sm" color={colors.danger}>{error}</Text>}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-  input: {},
-  inputError: {},
-});

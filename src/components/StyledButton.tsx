@@ -1,6 +1,8 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 import { Spinner } from './primitives/Spinner';
 import { Text } from './primitives/Text';
+import { colors } from '../theme/theme';
+import { styles } from './StyledButton.styles';
 
 interface StyledButtonProps {
   label: string;
@@ -17,21 +19,29 @@ export function StyledButton({
   isLoading = false,
   testID,
 }: StyledButtonProps) {
+  const textColor = variant === 'primary' ? colors.onPrimary : colors.text;
+
   return (
     <Pressable
       onPress={onPress}
       disabled={isLoading}
-      style={[styles.base, styles[variant], isLoading && styles.disabled]}
+      style={({ pressed }) => [
+        styles.base,
+        styles[variant],
+        pressed && variant === 'primary' && styles.primaryPressed,
+        pressed && variant === 'secondary' && styles.secondaryPressed,
+        isLoading && styles.disabled,
+      ]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: isLoading, busy: isLoading }}
       testID={testID}
     >
-      {isLoading ? <Spinner size="small" /> : <Text weight="medium">{label}</Text>}
+      {isLoading ? (
+        <Spinner size="small" color={textColor} />
+      ) : (
+        <Text weight="bold" size="lg" color={textColor}>{label}</Text>
+      )}
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center' },
-  primary: {},
-  secondary: {},
-  disabled: {},
-});
