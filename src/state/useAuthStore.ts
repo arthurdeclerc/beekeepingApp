@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useApiaryStore } from './useApiaryStore';
 import {
   login as loginService,
   logout as logoutService,
@@ -25,6 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   initialize: () =>
     watchSession((user) => {
+      if (user === undefined) useApiaryStore.getState().reset();
       set({ user, isAuthenticated: user !== undefined, isInitialized: true });
     }),
   login: async (credentials) => {
@@ -39,6 +41,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   logout: async () => {
     await logoutService();
+    useApiaryStore.getState().reset();
     set({ user: undefined, isAuthenticated: false });
   },
 }));

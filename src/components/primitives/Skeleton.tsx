@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated } from 'react-native';
+import { styles } from './Skeleton.styles';
 
 interface SkeletonProps {
   width?: number | `${number}%`;
@@ -23,7 +24,3 @@ export function Skeleton({ width = '100%', height = 16, borderRadius = 4 }: Skel
 
   return <Animated.View style={[styles.base, { width, height, borderRadius, opacity }]} />;
 }
-
-const styles = StyleSheet.create({
-  base: {},
-});

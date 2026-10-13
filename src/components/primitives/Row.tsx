@@ -1,4 +1,5 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { styles } from './Row.styles';
 
 interface RowProps {
   children: React.ReactNode;
@@ -28,12 +29,3 @@ export function Row({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  base: { flexDirection: 'row' },
-  wrap: { flexWrap: 'wrap' },
-  gap_none: {},
-  gap_sm: {},
-  gap_md: {},
-  gap_lg: {},
-});

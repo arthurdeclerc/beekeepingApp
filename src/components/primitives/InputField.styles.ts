@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     paddingHorizontal: spacing.md,
   },
+  fieldMultiline: { alignItems: 'flex-start', minHeight: 110 },
   fieldFocused: { borderColor: colors.borderFocus, borderWidth: 3 },
   fieldError: { borderColor: colors.danger, borderWidth: 3 },
   input: {
@@ -25,6 +26,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
   },
+  inputMultiline: { minHeight: 100, paddingTop: spacing.sm + 2, textAlignVertical: 'top' },
   toggle: {
     minWidth: 32,
     minHeight: touchTarget,
