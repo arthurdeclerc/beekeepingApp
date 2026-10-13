@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/apiary/:id/edit", "destination": "/apiary/[id]/edit.html" },
+    { "source": "/apiary/:id", "destination": "/apiary/[id].html" }
+  ]
+}
