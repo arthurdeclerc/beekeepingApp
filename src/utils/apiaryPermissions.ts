@@ -15,3 +15,7 @@ export function canEditApiary(role: ApiaryRole): boolean {
 export function canDeleteApiary(role: ApiaryRole): boolean {
   return role === 'owner';
 }
+
+export function canAddHives(role: ApiaryRole): boolean {
+  return role === 'owner' || role === 'administrator' || role === 'contributor';
+}

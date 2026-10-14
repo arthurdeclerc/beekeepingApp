@@ -11,6 +11,8 @@ export function messageForError(error: unknown): string {
         return 'This item no longer exists.';
       case 'invalid':
         return 'Some of the values are not allowed. Check the fields and try again.';
+      case 'duplicate':
+        return 'That name is already in use here. Choose another one.';
       case 'unknown':
         break;
     }
