@@ -47,3 +47,35 @@ describe('Apiaries', () => {
     cy.contains(renamed).should('not.exist');
   });
 });
+
+// Needs the hives table from supabase/migrations/002_hives.sql.
+describe('Hives', () => {
+  beforeEach(() => {
+    cy.login();
+    cy.visit('/');
+  });
+
+  it('adds a hive to an apiary', () => {
+    const apiaryName = `Hive test apiary ${Date.now()}`;
+
+    cy.get('[data-testid="new-apiary-button"]').click();
+    cy.get('[data-testid="apiary-name-input"]').type(apiaryName);
+    cy.get('[data-testid="apiary-save-button"]').click();
+    cy.contains('No hives yet').should('be.visible');
+
+    cy.get('[data-testid="add-hive-button"]').click();
+    cy.get('[data-testid="hive-save-button"]').click();
+    cy.contains('Enter a name or number.').should('be.visible');
+
+    cy.get('[data-testid="hive-name-input"]').type('Hive 1');
+    cy.get('[data-testid="hive-type-langstroth"]').click();
+    cy.get('[data-testid="hive-save-button"]').click();
+
+    cy.contains('Hive 1').should('be.visible');
+    cy.contains('Langstroth').should('be.visible');
+
+    // clean up
+    cy.get('[data-testid="delete-apiary-button"]').click();
+    cy.get('[data-testid="confirm-delete-button"]').click();
+  });
+});

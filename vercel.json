@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/apiary/:id/edit", "destination": "/apiary/[id]/edit.html" },
-    { "source": "/apiary/:id", "destination": "/apiary/[id].html" }
+    {
+      "source": "/apiary/:id/hive/new",
+      "destination": "/apiary/[id]/hive/new.html"
+    },
+    {
+      "source": "/apiary/:id/edit",
+      "destination": "/apiary/[id]/edit.html"
+    },
+    {
+      "source": "/apiary/:id",
+      "destination": "/apiary/[id].html"
+    }
   ]
 }

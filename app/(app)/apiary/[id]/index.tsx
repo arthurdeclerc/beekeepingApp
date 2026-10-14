@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Stack as RouterStack, router, useLocalSearchParams } from 'expo-router';
 import { useApiaryStore } from '../../../../src/state/useApiaryStore';
+import { useHiveStore } from '../../../../src/state/useHiveStore';
 import { Alert } from '../../../../src/components/Alert';
 import { ApiarySwitcher } from '../../../../src/components/ApiarySwitcher';
+import { HiveCard } from '../../../../src/components/HiveCard';
 import { StyledButton } from '../../../../src/components/StyledButton';
 import { Badge } from '../../../../src/components/primitives/Badge';
 import { EmptyState } from '../../../../src/components/primitives/EmptyState';
@@ -12,12 +14,15 @@ import { Skeleton } from '../../../../src/components/primitives/Skeleton';
 import { Stack } from '../../../../src/components/primitives/Stack';
 import { Text } from '../../../../src/components/primitives/Text';
 import { colors } from '../../../../src/theme/theme';
-import { canDeleteApiary, canEditApiary, ROLE_LABELS } from '../../../../src/utils/apiaryPermissions';
+import { canAddHives, canDeleteApiary, canEditApiary, ROLE_LABELS } from '../../../../src/utils/apiaryPermissions';
 import { messageForError } from '../../../../src/utils/errorMessages';
 
 export default function ApiaryDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { apiaries, hasLoaded, loadApiaries, deleteApiary } = useApiaryStore();
+  const hives = useHiveStore((state) => (id === undefined ? undefined : state.hivesByApiary[id]));
+  const hivesError = useHiveStore((state) => state.error);
+  const loadHives = useHiveStore((state) => state.loadHives);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | undefined>(undefined);
@@ -25,6 +30,10 @@ export default function ApiaryDetailScreen() {
   useEffect(() => {
     if (!hasLoaded) void loadApiaries();
   }, [hasLoaded, loadApiaries]);
+
+  useEffect(() => {
+    if (id !== undefined) void loadHives(id);
+  }, [id, loadHives]);
 
   const apiary = apiaries.find((candidate) => candidate.id === id);
 
@@ -93,7 +102,22 @@ export default function ApiaryDetailScreen() {
 
         <Stack gap="sm">
           <Text size="lg" weight="bold">Hives</Text>
-          <EmptyState title="No hives yet" description="Hives you add to this apiary will show up here." />
+          {hives === undefined && hivesError === undefined && <Skeleton height={76} borderRadius={12} />}
+          {hives === undefined && hivesError !== undefined && (
+            <Text size="sm" color={colors.danger}>{hivesError}</Text>
+          )}
+          {hives?.length === 0 && (
+            <EmptyState title="No hives yet" description="Hives you add to this apiary will show up here." />
+          )}
+          {hives?.map((hive) => <HiveCard key={hive.id} hive={hive} />)}
+          {canAddHives(apiary.role) && (
+            <StyledButton
+              label="Add hive"
+              variant="secondary"
+              onPress={() => router.push({ pathname: '/apiary/[id]/hive/new', params: { id: apiary.id } })}
+              testID="add-hive-button"
+            />
+          )}
         </Stack>
 
         {(canEditApiary(apiary.role) || canDeleteApiary(apiary.role)) && (
