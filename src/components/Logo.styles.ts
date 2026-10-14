@@ -1,6 +1,3 @@
-import { StyleSheet } from 'react-native';
-import { colors, radius } from '../theme/theme';
-
 export const LOGO_RATIO = 487 / 405; // width / height of the source image
 const LOGO_MAX_HEIGHT = 300;
 const LOGO_MIN_HEIGHT = 90;
@@ -19,13 +16,3 @@ export function getLogoSize(windowWidth: number, windowHeight: number): { width:
   );
   return { width: height * LOGO_RATIO, height };
 }
-
-export const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  content: { flex: 1, justifyContent: 'center', width: '100%', maxWidth: 420, alignSelf: 'center' },
-  formError: {
-    padding: 12,
-    borderRadius: radius.md,
-    backgroundColor: colors.dangerBackground,
-  },
-});

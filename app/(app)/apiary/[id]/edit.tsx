@@ -8,7 +8,6 @@ import { EmptyState } from '../../../../src/components/primitives/EmptyState';
 import { Screen } from '../../../../src/components/primitives/Screen';
 import { Skeleton } from '../../../../src/components/primitives/Skeleton';
 import { canEditApiary } from '../../../../src/utils/apiaryPermissions';
-import { styles } from '../../../../src/styles/apiaries.styles';
 import type { ApiaryInput } from '../../../../src/types/Apiary';
 
 export default function EditApiaryScreen() {
@@ -48,7 +47,7 @@ export default function EditApiaryScreen() {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <RouterStack.Screen options={{ title: 'Edit apiary' }} />
       <Screen padding="lg">
         <ApiaryForm

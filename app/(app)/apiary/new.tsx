@@ -3,7 +3,6 @@ import { Stack as RouterStack, router } from 'expo-router';
 import { useApiaryStore } from '../../../src/state/useApiaryStore';
 import { ApiaryForm } from '../../../src/components/ApiaryForm';
 import { Screen } from '../../../src/components/primitives/Screen';
-import { styles } from '../../../src/styles/apiaries.styles';
 import type { ApiaryInput } from '../../../src/types/Apiary';
 
 export default function NewApiaryScreen() {
@@ -15,7 +14,7 @@ export default function NewApiaryScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <RouterStack.Screen options={{ title: 'New apiary' }} />
       <Screen padding="lg">
         <ApiaryForm submitLabel="Save apiary" onSubmit={handleSubmit} />
