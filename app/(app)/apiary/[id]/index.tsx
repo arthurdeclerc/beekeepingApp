@@ -109,7 +109,21 @@ export default function ApiaryDetailScreen() {
           {hives?.length === 0 && (
             <EmptyState title="No hives yet" description="Hives you add to this apiary will show up here." />
           )}
-          {hives?.map((hive) => <HiveCard key={hive.id} hive={hive} />)}
+          {hives?.map((hive) => (
+            <HiveCard
+              key={hive.id}
+              hive={hive}
+              onPress={
+                canAddHives(apiary.role)
+                  ? () =>
+                      router.push({
+                        pathname: '/apiary/[id]/hive/[hiveId]/edit',
+                        params: { id: apiary.id, hiveId: hive.id },
+                      })
+                  : undefined
+              }
+            />
+          ))}
           {canAddHives(apiary.role) && (
             <StyledButton
               label="Add hive"

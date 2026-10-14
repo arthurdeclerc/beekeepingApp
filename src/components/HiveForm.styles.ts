@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+  colorRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   formError: {
     padding: 12,
     borderRadius: radius.md,

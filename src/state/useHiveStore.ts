@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import { createHive as createHiveService, getHives } from '../services/hiveService';
+import {
+  createHive as createHiveService,
+  getHives,
+  updateHive as updateHiveService,
+} from '../services/hiveService';
 import { messageForError } from '../utils/errorMessages';
 import type { Hive, HiveInput } from '../types/Hive';
 
@@ -9,6 +13,7 @@ interface HiveState {
   error: string | undefined;
   loadHives: (apiaryId: string) => Promise<void>;
   createHive: (apiaryId: string, input: HiveInput) => Promise<Hive>;
+  updateHive: (apiaryId: string, hiveId: string, input: HiveInput) => Promise<Hive>;
   reset: () => void;
 }
 
@@ -36,6 +41,18 @@ export const useHiveStore = create<HiveState>((set) => ({
       },
     }));
     return hive;
+  },
+  updateHive: async (apiaryId, hiveId, input) => {
+    const updated = await updateHiveService(hiveId, input);
+    set((state) => ({
+      hivesByApiary: {
+        ...state.hivesByApiary,
+        [apiaryId]: (state.hivesByApiary[apiaryId] ?? [])
+          .map((hive) => (hive.id === hiveId ? updated : hive))
+          .sort(byName),
+      },
+    }));
+    return updated;
   },
   // Called on logout so the next user never sees someone else's data.
   reset: () => set({ hivesByApiary: {}, error: undefined }),
