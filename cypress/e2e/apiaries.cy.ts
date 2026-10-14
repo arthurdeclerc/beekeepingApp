@@ -74,6 +74,15 @@ describe('Hives', () => {
     cy.contains('Hive 1').should('be.visible');
     cy.contains('Langstroth').should('be.visible');
 
+    // add queen details by editing the hive; 2025 is marked blue
+    cy.contains('Hive 1').click();
+    cy.get('[data-testid="queen-year-input"]').type('2025');
+    cy.get('[data-testid="queen-color-preview"]').should('contain', 'blue');
+    cy.get('[data-testid="queen-breed-input"]').type('Buckfast');
+    cy.get('[data-testid="queen-marked-toggle"]').click();
+    cy.get('[data-testid="hive-save-button"]').click();
+    cy.contains('Queen 2025 · Buckfast · marked').should('be.visible');
+
     // clean up
     cy.get('[data-testid="delete-apiary-button"]').click();
     cy.get('[data-testid="confirm-delete-button"]').click();
