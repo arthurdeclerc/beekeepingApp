@@ -1,18 +1,17 @@
 import { useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, useWindowDimensions, View } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Redirect, router } from 'expo-router';
 import { useAuthStore } from '../src/state/useAuthStore';
 import { AuthFailure } from '../src/services/authService';
+import { Alert } from '../src/components/Alert';
+import { CenteredColumn } from '../src/components/CenteredColumn';
+import { Logo } from '../src/components/Logo';
 import { InputField } from '../src/components/primitives/InputField';
 import { StyledButton } from '../src/components/StyledButton';
 import { Screen } from '../src/components/primitives/Screen';
 import { Stack } from '../src/components/primitives/Stack';
 import { Text } from '../src/components/primitives/Text';
 import { colors } from '../src/theme/theme';
-import { getLogoSize, styles } from '../src/styles/login.styles';
-
-const logo: ImageSourcePropType = require('../assets/logo.png');
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_FAILED_ATTEMPTS = 5;
@@ -35,8 +34,6 @@ export default function LoginScreen() {
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [lockedUntil, setLockedUntil] = useState(0);
   const { login, isLoading, isAuthenticated } = useAuthStore();
-  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
-  const logoSize = getLogoSize(windowWidth, windowHeight);
 
   if (isAuthenticated) return <Redirect href="/" />;
 
@@ -77,19 +74,14 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      style={styles.flex}
+      style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <Screen padding="lg">
-        <View style={styles.content}>
+        <CenteredColumn>
           <Stack gap="lg">
             <Stack gap="sm" align="center">
-              <Image
-                source={logo}
-                style={logoSize}
-                resizeMode="contain"
-                accessibilityLabel="HiveMind Apiary Manager"
-              />
+              <Logo />
             </Stack>
 
             <Stack gap="md">
@@ -120,9 +112,9 @@ export default function LoginScreen() {
                 testID="password-input"
               />
               {formError !== undefined && (
-                <View style={styles.formError} accessibilityRole="alert" testID="login-error">
+                <Alert testID="login-error">
                   <Text size="sm" color={colors.danger}>{formError}</Text>
-                </View>
+                </Alert>
               )}
             </Stack>
 
@@ -133,7 +125,7 @@ export default function LoginScreen() {
               testID="login-button"
             />
           </Stack>
-        </View>
+        </CenteredColumn>
       </Screen>
     </KeyboardAvoidingView>
   );

@@ -1,19 +1,19 @@
 import { useEffect } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { Stack as RouterStack, router } from 'expo-router';
 import { useApiaryStore } from '../../src/state/useApiaryStore';
 import { useAuthStore } from '../../src/state/useAuthStore';
 import { ApiaryCard } from '../../src/components/ApiaryCard';
 import { FloatingActionButton } from '../../src/components/FloatingActionButton';
+import { Alert } from '../../src/components/Alert';
+import { IconButton } from '../../src/components/IconButton';
 import { StyledButton } from '../../src/components/StyledButton';
 import { EmptyState } from '../../src/components/primitives/EmptyState';
-import { Icon } from '../../src/components/primitives/Icon';
 import { Screen } from '../../src/components/primitives/Screen';
 import { Skeleton } from '../../src/components/primitives/Skeleton';
 import { Stack } from '../../src/components/primitives/Stack';
 import { Text } from '../../src/components/primitives/Text';
 import { colors } from '../../src/theme/theme';
-import { styles } from '../../src/styles/apiaries.styles';
 
 export default function ApiariesScreen() {
   const { apiaries, hasLoaded, isLoading, error, loadApiaries } = useApiaryStore();
@@ -26,20 +26,17 @@ export default function ApiariesScreen() {
   const openNewApiary = () => router.push('/apiary/new');
 
   return (
-    <View style={styles.flex}>
+    <View style={{ flex: 1 }}>
       <RouterStack.Screen
         options={{
           title: 'My apiaries',
           headerRight: () => (
-            <Pressable
+            <IconButton
+              icon="log-out-outline"
+              label="Log out"
               onPress={() => void logout()}
-              style={styles.logout}
-              accessibilityRole="button"
-              accessibilityLabel="Log out"
               testID="logout-button"
-            >
-              <Icon name="log-out-outline" size={24} color={colors.text} />
-            </Pressable>
+            />
           ),
         }}
       />
@@ -55,9 +52,9 @@ export default function ApiariesScreen() {
 
           {hasLoaded && error !== undefined && (
             <Stack gap="md">
-              <View style={styles.errorBox} accessibilityRole="alert" testID="apiaries-error">
+              <Alert testID="apiaries-error">
                 <Text size="sm" color={colors.danger}>{error}</Text>
-              </View>
+              </Alert>
               <StyledButton label="Try again" variant="secondary" onPress={() => void loadApiaries()} />
             </Stack>
           )}
@@ -80,7 +77,7 @@ export default function ApiariesScreen() {
             />
           ))}
 
-          {apiaries.length > 0 && <View style={styles.fabSpace} />}
+          {apiaries.length > 0 && <View style={{ height: 72 }} />}
         </Stack>
       </Screen>
       <FloatingActionButton label="New apiary" onPress={openNewApiary} testID="new-apiary-button" />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
 import { Stack as RouterStack, router, useLocalSearchParams } from 'expo-router';
 import { useApiaryStore } from '../../../../src/state/useApiaryStore';
+import { Alert } from '../../../../src/components/Alert';
 import { ApiarySwitcher } from '../../../../src/components/ApiarySwitcher';
 import { StyledButton } from '../../../../src/components/StyledButton';
 import { Badge } from '../../../../src/components/primitives/Badge';
@@ -14,7 +14,6 @@ import { Text } from '../../../../src/components/primitives/Text';
 import { colors } from '../../../../src/theme/theme';
 import { canDeleteApiary, canEditApiary, ROLE_LABELS } from '../../../../src/utils/apiaryPermissions';
 import { messageForError } from '../../../../src/utils/errorMessages';
-import { styles } from '../../../../src/styles/apiaries.styles';
 
 export default function ApiaryDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -116,7 +115,7 @@ export default function ApiaryDetailScreen() {
               />
             )}
             {canDeleteApiary(apiary.role) && isConfirmingDelete && (
-              <View style={styles.deleteBox} accessibilityRole="alert" testID="delete-confirm">
+              <Alert outlined testID="delete-confirm">
                 <Stack gap="md">
                   <Text weight="bold">Delete {apiary.name}?</Text>
                   <Text size="sm">This also removes its hives and history. This cannot be undone.</Text>
@@ -134,7 +133,7 @@ export default function ApiaryDetailScreen() {
                     testID="cancel-delete-button"
                   />
                 </Stack>
-              </View>
+              </Alert>
             )}
           </Stack>
         )}
